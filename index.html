@@ -7,8 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/scrollreveal"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 fontFamily: {
                     sans: ['Inter', 'sans-serif'],
@@ -16,8 +18,32 @@
                 extend: {
                     colors: {
                         primary: '#3B82F6',
-                        dark: '#000000',  // Changé en noir pur
-                        secondary: '#1A1A1A'  // Gris très foncé
+                        dark: '#000000',
+                        secondary: '#1A1A1A',
+                        light: {
+                            bg: '#F8FAFC',
+                            text: '#1E293B',
+                            secondary: '#E2E8F0'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-in-out',
+                        'slide-in-left': 'slideInLeft 0.5s ease-out',
+                        'slide-in-right': 'slideInRight 0.5s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideInLeft: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        }
                     }
                 }
             }
@@ -42,14 +68,34 @@
         .hero-overlay {
             background-color: rgba(0, 0, 0, 0.7);
         }
+        .projects-container {
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+        }
+        .project-card {
+            scroll-snap-align: start;
+            flex: 0 0 auto;
+        }
+        .dark .light-mode-only {
+            display: none;
+        }
+        .light .dark-mode-only {
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-dark text-gray-300 font-sans antialiased">
+    <!-- Dark/Light Mode Toggle -->
+    <button id="theme-toggle" class="fixed right-6 bottom-6 z-50 p-3 bg-primary rounded-full shadow-lg hover:bg-blue-600 transition">
+        <i class="fas fa-moon dark-mode-only"></i>
+        <i class="fas fa-sun light-mode-only"></i>
+    </button>
+
     <!-- Hero Section -->
     <header class="min-h-screen flex items-center justify-center relative overflow-hidden hero-bg">
         <div class="absolute inset-0 hero-overlay"></div>
         <div class="container mx-auto px-6 py-24 z-10">
-            <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="flex flex-col md:flex-row items-center gap-12 animate-fade-in">
                 <div class="md:w-1/2 flex justify-center">
                     <img src="images/ma_photo.jpg" alt="Samuel Onema" 
                          class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-primary shadow-2xl z-10">
@@ -83,6 +129,11 @@
                     <a href="#apropos" class="hover:text-primary transition">À propos</a>
                     <a href="#realisation" class="hover:text-primary transition">Réalisations</a>
                     <a href="#contact" class="hover:text-primary transition">Contact</a>
+                    <!-- Bouton CV dans la navigation -->
+                    <a href="docs/Samuel_Onema_CV.pdf" target="_blank" download="Samuel_Onema_CV.pdf" 
+                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition flex items-center">
+                        <i class="fas fa-download mr-2"></i>CV
+                    </a>
                 </div>
                 <button class="md:hidden text-white focus:outline-none" id="menu-toggle">
                     <i class="fas fa-bars text-xl"></i>
@@ -93,6 +144,11 @@
                 <a href="#apropos" class="block py-2 hover:text-primary">À propos</a>
                 <a href="#realisation" class="block py-2 hover:text-primary">Réalisations</a>
                 <a href="#contact" class="block py-2 hover:text-primary">Contact</a>
+                <!-- Bouton CV dans le menu mobile -->
+                <a href="docs/Samuel_Onema_CV.pdf" target="_blank" download="Samuel_Onema_CV.pdf" 
+                class="block py-2 px-4 bg-primary text-white rounded-lg hover:bg-blue-600 transition mt-2 inline-flex items-center">
+                    <i class="fas fa-download mr-2"></i>Télécharger mon CV
+                </a>
             </div>
         </div>
     </nav>
@@ -105,16 +161,23 @@
             </h2>
             <div class="flex flex-col md:flex-row gap-12 items-center">
                 <div class="md:w-1/2">
-                    <p class="text-lg leading-relaxed mb-6">
+                    <p class="text-lg leading-relaxed mb-6 animate-slide-in-left">
                         Depuis maintenant 5 ans, je me suis pris de passion pour le développement web et l'UX Design. 
                         Mes compétences diverses me permettent de proposer le développement d'applications web sur mesure, 
                         de leur conception à leur mise en service.
                     </p>
-                    <p class="text-lg leading-relaxed mb-6">
+                    <p class="text-lg leading-relaxed mb-6 animate-slide-in-left">
                         Je combine créativité et expertise technique pour créer des solutions digitales qui répondent 
                         parfaitement aux besoins des utilisateurs et des entreprises.
                     </p>
-                    <div class="grid grid-cols-2 gap-4">
+                    <!-- Bouton Télécharger CV -->
+                    <div class="mb-8 animate-slide-in-left">
+                        <a href="docs/Samuel_Onema_CV.pdf" target="_blank" download="Samuel_Onema_CV.pdf" 
+                            class="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition duration-300">
+                            <i class="fas fa-download mr-2"></i>Télécharger mon CV
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 animate-slide-in-right">
                         <div class="bg-dark/50 p-4 rounded-lg">
                             <h3 class="text-primary font-semibold mb-2"><i class="fas fa-laptop-code mr-2"></i>Front-end</h3>
                             <p>Vue.js, React, HTML/CSS, Tailwind</p>
@@ -133,7 +196,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="md:w-1/2">
+                <div class="md:w-1/2 animate-slide-in-right">
                     <img src="images/coding.png" alt="Développement web" class="rounded-lg shadow-2xl border border-gray-700">
                 </div>
             </div>
@@ -147,82 +210,119 @@
                 <span class="border-b-4 border-primary pb-2">Mes Réalisations</span>
             </h2>
             
-            <!-- Projet 1 -->
-            <div class="bg-secondary rounded-xl p-6 mb-16 shadow-lg">
-                <div class="flex flex-col lg:flex-row gap-8">
-                    <div class="lg:w-1/2">
-                        <h3 class="text-2xl font-bold text-white mb-4">Digitalisation des Documents pour la SNEL</h3>
-                        <p class="mb-4">Application de gestion électronique des documents (GED) pour la Société Nationale d'Électricité (SNEL) en RDC.</p>
-                        
-                        <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Description</h4>
-                        <p class="mb-4">L'application digitalise et sécurise les documents d'entreprise, simplifie leur accès et leur stockage, et améliore la traçabilité.</p>
-                        
-                        <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Technologies</h4>
-                        <ul class="grid grid-cols-2 gap-2 mb-6">
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Vue.js</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Node.js</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Base NoSQL</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Figma</li>
-                        </ul>
-                    </div>
-                    <div class="lg:w-1/2">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <img src="images/imgsnel1.png" alt="SNEL App" class="project-image rounded-lg border border-gray-700 cursor-pointer">
-                            <img src="images/imgsnel2.png" alt="SNEL App" class="project-image rounded-lg border border-gray-700 cursor-pointer">
+            <div class="relative">
+                <div class="projects-container flex overflow-x-auto pb-8 gap-8" id="projects-container">
+                    <!-- Projet 1 -->
+                    <div class="project-card w-full md:w-3/4 lg:w-2/3 xl:w-1/2 flex-shrink-0 bg-secondary rounded-xl p-6 shadow-lg">
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="lg:w-1/2">
+                                <h3 class="text-2xl font-bold text-white mb-4">Digitalisation des Documents pour la SNEL</h3>
+                                <p class="mb-4">Application de gestion électronique des documents (GED) pour la Société Nationale d'Électricité (SNEL) en RDC.</p>
+                                
+                                <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Description</h4>
+                                <p class="mb-4">L'application digitalise et sécurise les documents d'entreprise, simplifie leur accès et leur stockage, et améliore la traçabilité.</p>
+                                
+                                <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Technologies</h4>
+                                <ul class="grid grid-cols-2 gap-2 mb-6">
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Vue.js</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Node.js</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Base NoSQL</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Figma</li>
+                                </ul>
+                            </div>
+                            <div class="lg:w-1/2">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <img src="images/imgsnel1.png" alt="SNEL App" class="project-image rounded-lg border border-gray-700 cursor-pointer">
+                                    <img src="images/imgsnel2.png" alt="SNEL App" class="project-image rounded-lg border border-gray-700 cursor-pointer">
+                                </div>
+                                <video controls class="w-full rounded-lg border border-gray-700">
+                                    <source src="images/videos/snelvid.mp4" type="video/mp4">
+                                    Votre navigateur ne supporte pas la vidéo.
+                                </video>
+                            </div>
                         </div>
-                        <video controls class="w-full rounded-lg border border-gray-700">
-                            <source src="images/videos/snelvid.mp4" type="video/mp4">
-                            Votre navigateur ne supporte pas la vidéo.
-                        </video>
                     </div>
-                </div>
-            </div>
 
-            <!-- Projet 2 -->
-            <div class="bg-secondary rounded-xl p-6 mb-16 shadow-lg">
-                <div class="flex flex-col lg:flex-row gap-8">
-                    <div class="lg:w-1/2">
-                        <h3 class="text-2xl font-bold text-white mb-4">Application de Vente en Ligne avec Python</h3>
-                        <p class="mb-4">Système complet de vente en ligne avec gestion des utilisateurs et des produits.</p>
-                        
-                        <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Technologies</h4>
-                        <ul class="grid grid-cols-2 gap-2 mb-6">
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Python</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Django</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> HTML/CSS</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> JavaScript</li>
-                        </ul>
+                    <!-- Projet 2 -->
+                    <div class="project-card w-full md:w-3/4 lg:w-2/3 xl:w-1/2 flex-shrink-0 bg-secondary rounded-xl p-6 shadow-lg">
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="lg:w-1/2">
+                                <h3 class="text-2xl font-bold text-white mb-4">Application de Vente en Ligne avec Python</h3>
+                                <p class="mb-4">Système complet de vente en ligne avec gestion des utilisateurs et des produits.</p>
+                                
+                                <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Technologies</h4>
+                                <ul class="grid grid-cols-2 gap-2 mb-6">
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Python</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Django</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> HTML/CSS</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> JavaScript</li>
+                                </ul>
+                            </div>
+                            <div class="lg:w-1/2">
+                                <img src="images/imgpy.PNG" alt="E-commerce Python" class="project-image rounded-lg border border-gray-700 w-full cursor-pointer">
+                            </div>
+                        </div>
                     </div>
-                    <div class="lg:w-1/2">
-                        <img src="images/imgpy.PNG" alt="E-commerce Python" class="project-image rounded-lg border border-gray-700 w-full cursor-pointer">
-                    </div>
-                </div>
-            </div>
 
-            <!-- Projet 3 -->
-            <div class="bg-secondary rounded-xl p-6 shadow-lg">
-                <div class="flex flex-col lg:flex-row gap-8">
-                    <div class="lg:w-1/2">
-                        <h3 class="text-2xl font-bold text-white mb-4">Site Web en JavaScript</h3>
-                        <p class="mb-4">Site web dynamique avec fonctionnalités interactives et interface utilisateur conviviale.</p>
-                        
-                        <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Technologies</h4>
-                        <ul class="grid grid-cols-2 gap-2 mb-6">
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> JavaScript</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> HTML5</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> CSS3</li>
-                            <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> API REST</li>
-                        </ul>
+                    <!-- Projet 3 -->
+                    <div class="project-card w-full md:w-3/4 lg:w-2/3 xl:w-1/2 flex-shrink-0 bg-secondary rounded-xl p-6 shadow-lg">
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="lg:w-1/2">
+                                <h3 class="text-2xl font-bold text-white mb-4">Site Web en JavaScript</h3>
+                                <p class="mb-4">Site web dynamique avec fonctionnalités interactives et interface utilisateur conviviale.</p>
+                                
+                                <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Technologies</h4>
+                                <ul class="grid grid-cols-2 gap-2 mb-6">
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> JavaScript</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> HTML5</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> CSS3</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> API REST</li>
+                                </ul>
+                            </div>
+                            <div class="lg:w-1/2">
+                                <img src="images/siteweb.png" alt="Site JavaScript" class="project-image rounded-lg border border-gray-700 mb-4 cursor-pointer">
+                                <video controls class="w-full rounded-lg border border-gray-700">
+                                    <source src="images/videos/webvid.mp4" type="video/mp4">
+                                    Votre navigateur ne supporte pas la vidéo.
+                                </video>
+                            </div>
+                        </div>
                     </div>
-                    <div class="lg:w-1/2">
-                        <img src="images/siteweb.png" alt="Site JavaScript" class="project-image rounded-lg border border-gray-700 mb-4 cursor-pointer">
-                        <video controls class="w-full rounded-lg border border-gray-700">
-                            <source src="images/videos/webvid.mp4" type="video/mp4">
-                            Votre navigateur ne supporte pas la vidéo.
-                        </video>
+
+                    <!-- Projet 4 - Coreasoft -->
+                    <div class="project-card w-full md:w-3/4 lg:w-2/3 xl:w-1/2 flex-shrink-0 bg-secondary rounded-xl p-6 shadow-lg">
+                        <div class="flex flex-col lg:flex-row gap-8">
+                            <div class="lg:w-1/2">
+                                <h3 class="text-2xl font-bold text-white mb-4">Site Web pour Coreasoft</h3>
+                                <p class="mb-4">Site vitrine moderne développé avec HTML et Tailwind CSS pour Coreasoft.</p>
+                                
+                                <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Description</h4>
+                                <p class="mb-4">Site responsive avec animations fluides et design moderne, mettant en valeur les services de Coreasoft.</p>
+                                
+                                <h4 class="text-xl font-semibold text-primary mt-6 mb-2">Technologies</h4>
+                                <ul class="grid grid-cols-2 gap-2 mb-6">
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> HTML5</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> Tailwind CSS</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> JavaScript</li>
+                                    <li class="flex items-center"><i class="fas fa-check-circle text-primary mr-2"></i> GSAP</li>
+                                </ul>
+                            </div>
+                            <div class="lg:w-1/2">
+                                    <img src="images/coding.png" alt="Coreasoft" class="project-image rounded-lg border border-gray-700 cursor-pointer">
+                                    <img src="images/coreasoft.png" alt="Coreasoft" class="project-image rounded-lg border border-gray-700 cursor-pointer">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
+                <button id="prev-project" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-primary text-white p-3 rounded-full shadow-lg z-10 hover:bg-blue-600 transition -ml-4">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button id="next-project" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-primary text-white p-3 rounded-full shadow-lg z-10 hover:bg-blue-600 transition -mr-4">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
+            
         </div>
     </section>
 
@@ -244,7 +344,7 @@
                             </div>
                             <div>
                                 <h4 class="font-semibold">Email</h4>
-                                <a href="mailto:samuel.onema@2026.ulc-icam.com" class="hover:text-primary transition">samuel.onema@2026.ulc-icam.com</a>
+                                <a href="mailto:samuelonema7@gmail.com" class="hover:text-primary transition">samuelonema7@gmail.com</a>
                             </div>
                         </div>
                         <div class="flex items-center">
@@ -313,7 +413,7 @@
                     <a href="https://github.com/Samuel57-svg" target="_blank" class="text-gray-400 hover:text-primary transition">
                         <i class="fab fa-github text-xl"></i>
                     </a>
-                    <a href="mailto:samuel.onema@2026.ulc-icam.com" class="text-gray-400 hover:text-primary transition">
+                    <a href="mailto:samuelonema7@gmail.com" class="text-gray-400 hover:text-primary transition">
                         <i class="fas fa-envelope text-xl"></i>
                     </a>
                 </div>
@@ -337,6 +437,66 @@
                 });
             });
         });
+
+        // ScrollReveal animations
+        ScrollReveal().reveal('.animate-fade-in', {
+            delay: 200,
+            duration: 1000,
+            easing: 'ease-in-out'
+        });
+
+        ScrollReveal().reveal('.animate-slide-in-left', {
+            delay: 200,
+            duration: 800,
+            distance: '50px',
+            origin: 'left',
+            easing: 'ease-out'
+        });
+
+        ScrollReveal().reveal('.animate-slide-in-right', {
+            delay: 200,
+            duration: 800,
+            distance: '50px',
+            origin: 'right',
+            easing: 'ease-out'
+        });
+
+        // Projects carousel navigation
+        const projectsContainer = document.getElementById('projects-container');
+        const prevButton = document.getElementById('prev-project');
+        const nextButton = document.getElementById('next-project');
+        
+        nextButton.addEventListener('click', () => {
+            projectsContainer.scrollBy({
+                left: projectsContainer.offsetWidth * 0.8,
+                behavior: 'smooth'
+            });
+        });
+        
+        prevButton.addEventListener('click', () => {
+            projectsContainer.scrollBy({
+                left: -projectsContainer.offsetWidth * 0.8,
+                behavior: 'smooth'
+            });
+        });
+
+        // Dark/Light mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('light');
+            document.documentElement.classList.toggle('dark');
+            
+            // Save preference to localStorage
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'false') {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+        }
     </script>
 </body>
 </html>
